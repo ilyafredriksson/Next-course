@@ -1,5 +1,7 @@
 "use client";
 
+import { layoutConfig } from "@/config/layout.config";
+import { siteConfig } from "@/config/site.config";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@heroui/navbar";
 import {Link, Button} from "@heroui/react";
 import Image from 'next/image';
@@ -8,7 +10,7 @@ import { use } from "react";
 
 export const Logo = () => {
   return (
-    <Image src="/logo_food.png" alt="logo food" width={36} height={36} priority />
+    <Image src="/logo_food.png" alt={siteConfig.title} width={36} height={36} priority />
   );
 };
 
@@ -16,23 +18,8 @@ export default function Header() {
 
     const pathname =usePathname();
 
-    const navItems=[
-    {href:"/", label:"Recepies"},
-    {href:"/ingridients", label:"Ingredients"},
-    {href:"/about", label:"About Us"}
-    ]
-
-
-  return (
-    <Navbar>
-      <NavbarBrand>
-        <Link href="/" className="flex gap-1" >
-        </Link>
-        <Logo />
-        <p className="font-bold text-inherit">International Food</p>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {navItems.map((item)=>{
+    const getNavItems =() =>{
+       return siteConfig.navItems.map((item)=>{
             const isActive= pathname===item.href;
         
         return (
@@ -50,7 +37,21 @@ export default function Header() {
             {item.label}
           </Link>
         </NavbarItem>
-        )})}
+        )})
+    }
+
+    
+
+  return (
+    <Navbar className={`h-[${layoutConfig.headerHeight}]`}>
+      <NavbarBrand>
+        <Link href="/" className="flex gap-1" >
+        </Link>
+        <Logo />
+        <p className="font-bold text-inherit">{siteConfig.title}</p>
+      </NavbarBrand>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+       {getNavItems()}
 
       </NavbarContent>
       <NavbarContent justify="end">
