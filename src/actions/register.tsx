@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/utils/prisma";
+import  prisma  from "@/utils/prisma";
 import { IFormData } from "@/types/for-data";
 export async function registerUser (formData: IFormData) {
 
