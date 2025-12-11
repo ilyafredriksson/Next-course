@@ -1,7 +1,11 @@
 'use client';
 
+
+import { registerUser } from '@/actions/register';
 import {Form,Input,Button} from '@heroui/react';
+import { register } from 'module';
 import {useState} from 'react';
+
 
 interface Iprops {
     onclose: () => void;
@@ -20,8 +24,15 @@ const validateEmail =(email:string) => {
 }
 
 const handleSubmit = async (e:React.FormEvent) => {
+
+
     e.preventDefault();
     console.log('Form submitted:', formData);
+
+    const result=await registerUser(formData);
+    console.log('Registration result:', result);
+
+
 
 
     onclose();
