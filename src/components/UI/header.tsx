@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import RegistrationModal from "./modals/registrastion.modal";
 import LoginModal from "./modals/login.modal";
+import { sign } from "crypto";
+import { signOutFunc } from "@/actions/sign-out";
 
 export const Logo = () => {
   return (
@@ -21,6 +23,11 @@ export default function Header() {
     const pathname =usePathname();
     const [isRegistrationOpen,setIsRegistrationOpen]=useState(false);
     const [isLoginOpen,setIsLoginOpen]=useState(false);
+
+   const  handleSignOutFunc = async () => {
+      await signOutFunc();
+   }
+      
 
     const getNavItems =() =>{
        return siteConfig.navItems.map((item)=>{
@@ -58,13 +65,18 @@ export default function Header() {
        {getNavItems()}
 
       </NavbarContent>
+       <NavbarContent justify="end">
+        <NavbarItem className="hidden lg:flex">
+          <Link href="#" className="button-secondary" onClick={handleSignOutFunc}>
+            Sign Out
+          </Link>
+        </NavbarItem>
+      </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Button 
-            onPress={()=>setIsLoginOpen(true)}
-          >
+          <Link href="#" className="button-secondary" onClick={() => setIsLoginOpen(true)}>
             Login
-          </Button>
+          </Link>
         </NavbarItem>
         <NavbarItem>
           <Button
