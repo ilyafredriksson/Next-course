@@ -8,7 +8,8 @@ import Header from "@/components/UI/header";
 import { Providers } from "@/providers/provider";
 import { siteConfig } from "@/config/site.config";
 import { layoutConfig } from "@/config/layout.config";
-
+import { SessionProvider } from "@/components/SessionProvider";
+import { auth } from "@/auth/auth";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,17 +25,19 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session=await auth();
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
+          <SessionProvider session={session}>
           <Header/>
           <main  className={` flex flex-col w-full justify-start items-center`}
             style={{
@@ -46,6 +49,7 @@ export default function RootLayout({
           <footer className={`h-[${layoutConfig.footerHeight}] w-full flex items-center justify-center py-3`}>
             <p>{siteConfig.description}</p>
           </footer>
+          </SessionProvider>
           </Providers>
         
       </body>
