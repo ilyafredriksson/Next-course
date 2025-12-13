@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -19,6 +17,9 @@ password String
  
 createdAt DateTime @default(now())@map("created_at")
 updatedAt DateTime @updatedAt @map("updated_at")
+  name     String? // Ny kolumn (valfri)
+  age      Int?    // Ny kolumn (valfri)
+  isActive Boolean @default(true) // Ny kolumn med standardvärde
 
 @@map("users")
 }
