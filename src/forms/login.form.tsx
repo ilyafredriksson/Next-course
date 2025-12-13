@@ -20,8 +20,23 @@ const handleSubmit = async (e:React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
 
-
-    onclose();
+    try {
+        const response = await fetch("/api/sign-in", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email, password: formData.password }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to sign in");
+        }
+  
+        const result = await response.json();
+        console.log("Sign-in successful:", result);
+        onclose();
+      } catch (error) {
+        console.error("Error signing in:", error);
+      }
 }
 
 return (

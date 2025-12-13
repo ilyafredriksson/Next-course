@@ -9,8 +9,6 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import RegistrationModal from "./modals/registrastion.modal";
 import LoginModal from "./modals/login.modal";
-import { sign } from "crypto";
-import { signOutFunc } from "@/actions/sign-out";
 
 export const Logo = () => {
   return (
@@ -25,7 +23,15 @@ export default function Header() {
     const [isLoginOpen,setIsLoginOpen]=useState(false);
 
    const  handleSignOutFunc = async () => {
-      await signOutFunc();
+      try {
+        const response = await fetch("/api/sign-out", { method: "POST" });
+        if (!response.ok) {
+          throw new Error("Failed to sign out");
+        }
+        console.log("Signed out successfully");
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
    }
       
 
