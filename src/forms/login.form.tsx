@@ -7,65 +7,81 @@ interface Iprops {
     onclose: () => void;
 }
 
-const LoginForm = ({onclose}: Iprops) => {
+const LoginForm = ({ onclose }: Iprops) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-const [formData,setFormData]=useState({
-    email:'',
-    password:'',
-    confirmPassword:''
-});
-
-
-const handleSubmit = async (e:React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
 
     try {
-        const response = await fetch("/api/sign-in", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: formData.email, password: formData.password }),
-        });
-  
-        if (!response.ok) {
-          throw new Error("Failed to sign in");
-        }
-  
-        const result = await response.json();
-        console.log("Sign-in successful:", result);
-        onclose();
-      } catch (error) {
-        console.error("Error signing in:", error);
-      }
-}
+      const response = await fetch("/api/sign-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
+      });
 
-return (
-    <Form className="max-w-md mx-auto p-4 border rounded-lg shadow-md" onSubmit={handleSubmit}>
-        <Input
-        aria-label='Email'
+      if (!response.ok) {
+        throw new Error("Failed to sign in");
+      }
+
+      const result = await response.json();
+      console.log("Sign-in successful:", result);
+      onclose();
+    } catch (error) {
+      console.error("Error signing in:", error);
+    }
+  };
+
+  return (
+    <Form
+      className="max-w-lg mx-auto p-6 bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200 rounded-xl shadow-lg"
+      onSubmit={handleSubmit}
+    >
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        Welcome Back
+      </h2>
+      <Input
+        aria-label="Email"
         required
-        name='email'
-        placeholder='Enter your email'
-        type='email'
+        name="email"
+        placeholder="Enter your email"
+        type="email"
         value={formData.email}
-        className="bg-default-100"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>)=> setFormData({...formData,email:e.target.value})}
+        className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setFormData({ ...formData, email: e.target.value })
+        }
       />
-       <Input
-       required
-         name='password'
-            placeholder='Enter your password'
-            type='password'
-            value={formData.password}
-            className="bg-default-100"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>)=> setFormData({...formData,password:e.target.value})}
-         />
-        
-         <div className='flex w-[100%] gap-4 items-center pt-8 justify-end'>
-            <Button onPress={onclose}>Cancel</Button>
-            <Button type='submit'>Logg in</Button>
-         </div>
-      </Form>
-);
-}
+      <Input
+        required
+        name="password"
+        placeholder="Enter your password"
+        type="password"
+        value={formData.password}
+        className="w-full p-3 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setFormData({ ...formData, password: e.target.value })
+        }
+      />
+      <div className="flex justify-between items-center">
+        <Button
+          onPress={onclose}
+          className="px-6 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600"
+        >
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+        >
+          Log In
+        </Button>
+      </div>
+    </Form>
+  );
+};
 export default LoginForm;
