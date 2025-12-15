@@ -1,7 +1,7 @@
 'use client';
 
-import {Form,Input,Button,} from '@heroui/react';
-import {useState} from 'react';
+import { Form, Input, Button, } from '@heroui/react';
+import { useState } from 'react';
 
 interface Iprops {
     onclose: () => void;
@@ -12,6 +12,7 @@ const LoginForm = ({ onclose }: Iprops) => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,17 +57,34 @@ const LoginForm = ({ onclose }: Iprops) => {
           setFormData({ ...formData, email: e.target.value })
         }
       />
-      <Input
-        required
-        name="password"
-        placeholder="Enter your password"
-        type="password"
-        value={formData.password}
-        className="w-full p-3 mb-6 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setFormData({ ...formData, password: e.target.value })
-        }
-      />
+      <div className="relative w-full mb-6">
+        <Input
+          required
+          name="password"
+          placeholder="Enter your password"
+          type={showPassword ? "text" : "password"}
+          value={formData.password}
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
+        />
+        <label className="absolute inset-y-0 right-3 flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            className="hidden"
+            onChange={() => setShowPassword(!showPassword)}
+            checked={showPassword}
+          />
+          <span className="w-8 h-4 bg-gray-300 rounded-full shadow-inner relative">
+            <span
+              className={`absolute top-0.5 left-0.5 w-3 h-3 bg-white rounded-full shadow transform transition-transform ${
+                showPassword ? "translate-x-4 bg-blue-500" : "bg-gray-500"
+              }`}
+            ></span>
+          </span>
+        </label>
+      </div>
       <div className="flex justify-between items-center">
         <Button
           onPress={onclose}
