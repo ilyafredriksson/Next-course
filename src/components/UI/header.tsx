@@ -73,20 +73,21 @@ export default function Header() {
       </NavbarContent>
        <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#" className="button-secondary" onClick={handleSignOutFunc}>
+          <Link href="#" className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105" onClick={handleSignOutFunc}>
             Sign Out
           </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#" className="button-secondary" onClick={() => setIsLoginOpen(true)}>
+          <Link href="#" className="px-4 py-2 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105" onClick={() => setIsLoginOpen(true)}>
             Login
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Button
-            onPress={()=>setIsRegistrationOpen(true)}
+            className="px-4 py-2 bg-gradient-to-r from-pink-500 to-red-600 text-white rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105"
+            onPress={() => setIsRegistrationOpen(true)}
           >
             Sign Up
           </Button>
