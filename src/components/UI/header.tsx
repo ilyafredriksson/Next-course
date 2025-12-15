@@ -35,28 +35,28 @@ export default function Header() {
    }
       
 
-    const getNavItems =() =>{
-       return siteConfig.navItems.map((item)=>{
-            const isActive= pathname===item.href;
-        
-        return (
-                <NavbarItem key={item.href}>
-          <Link href={item.href}
-          className={`px-3 py-1
-            ${isActive ? "text-blue-500" : "text-foreground"}
-                hover:text-blue-300 hover:border
-                hover:border-blue-300 hover:rounded-md
-                transition-colors
-                transition-border
-                duration-200`}
-            >
-          
-            {item.label}
-          </Link>
-        </NavbarItem>
-        )})
-    }
+    const getNavItems = () => {
+      return siteConfig.navItems.map((item, index) => {
+        const isActive = pathname === item.href;
+        const gradientColors = [
+          "from-blue-500 to-purple-600",
+          "from-green-500 to-teal-600",
+          "from-pink-500 to-red-600",
+        ];
+        const gradient = gradientColors[index % gradientColors.length];
 
+        return (
+          <NavbarItem key={item.href}>
+            <Link
+              href={item.href}
+              className={`px-4 py-2 bg-gradient-to-r ${gradient} text-white rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 ${isActive ? "text-blue-500" : "text-foreground"}`}
+            >
+              {item.label}
+            </Link>
+          </NavbarItem>
+        );
+      });
+    }
     
 
   return (
