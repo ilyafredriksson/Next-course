@@ -60,12 +60,12 @@ export default function Header() {
     
 
   return (
-    <Navbar className={`h-[${layoutConfig.headerHeight}]`}>
+    <Navbar className={`h-[${layoutConfig.headerHeight}] border-b border-white/10 pb-3 bg-black`}>
       <NavbarBrand>
         <Link href="/" className="flex gap-1" >
         </Link>
         <Logo />
-        <p className="font-bold text-inherit">{siteConfig.title}</p>
+        <p className="text-white text-lg font-semibold ml-2">{siteConfig.title}</p>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
        {getNavItems()}
