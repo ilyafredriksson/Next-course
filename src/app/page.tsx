@@ -1,218 +1,154 @@
 "use client";
-
+import Image from "next/image";
 import { useState } from "react";
-import { siteConfig } from "@/config/site.config";
 
-const categories = [
-	"All",
-	"Asian",
-	"European",
-	"Vegetarian",
-	"Dessert",
+const cuisines = [
+	{ name: "Asian", img: "/asian-food.jpg", icon: "🇨🇳" },
+	{ name: "European", img: "/european-food.jpg", icon: "🇫🇷" },
+	{ name: "African", img: "/african-food.jpg", icon: "🇳🇬" },
+	{ name: "Latin American", img: "/latin-food.jpg", icon: "🇲🇽" },
 ];
 
-const recipes = [
-	{
-		name: "Sushi",
-		desc: "Classic Japanese dish with rice, fish, and seaweed.",
-		img: "/logo_food.png",
-		cat: "Asian",
-	},
-	{
-		name: "Tacos",
-		desc: "Mexican street food with tortillas, meat, and veggies.",
-		img: "/logo_food.png",
-		cat: "European",
-	},
-	{
-		name: "Pasta",
-		desc: "Italian favorite with fresh pasta and rich sauces.",
-		img: "/logo_food.png",
-		cat: "European",
-	},
-	{
-		name: "Veggie Bowl",
-		desc: "Healthy vegetarian bowl with grains and greens.",
-		img: "/logo_food.png",
-		cat: "Vegetarian",
-	},
-	{
-		name: "Chocolate Cake",
-		desc: "Rich and moist chocolate dessert.",
-		img: "/logo_food.png",
-		cat: "Dessert",
-	},
+const dishes = [
+	{ name: "Pho", img: "/asian-food.jpg", desc: "Vietnamese noodle soup." },
+	{ name: "Paella", img: "/european-food.jpg", desc: "Spanish rice with seafood." },
+	{ name: "Jollof Rice", img: "/african-food.jpg", desc: "West African classic." },
+	{ name: "Tacos", img: "/latin-food.jpg", desc: "Mexican street food." },
 ];
 
-const testimonials = [
-	{
-		name: "Anna S.",
-		text: "The recipes are so easy to follow and delicious! My family loves them.",
-	},
-	{
-		name: "Liam K.",
-		text: "A fantastic resource for global cuisine. Highly recommended!",
-	},
-	{
-		name: "Sara M.",
-		text: "I discovered so many new dishes. The design is beautiful!",
-	},
+const values = [
+	{ icon: "🌍", title: "Global Flavors", desc: "Authentic dishes from every continent." },
+	{ icon: "👨‍🍳", title: "Expert Chefs", desc: "World-class chefs with passion for food." },
+	{ icon: "🍽️", title: "Elegant Dining", desc: "Enjoy a premium experience in our restaurant." },
+	{ icon: "⭐", title: "Top Rated", desc: "Loved by thousands of foodies worldwide." },
+];
+
+const reviews = [
+	{ name: "Anna S.", text: "Fantastisk mat och vacker design!", stars: 5, img: "/customer1.jpg" },
+	{ name: "Liam K.", text: "Bästa internationella menyerna online.", stars: 5, img: "/customer2.jpg" },
+	{ name: "Sara M.", text: "Underbar atmosfär och supergoda rätter!", stars: 4, img: "/customer3.jpg" },
 ];
 
 export default function Home() {
-	const [selectedCat, setSelectedCat] = useState("All");
-	const [showTop, setShowTop] = useState(false);
-
-	// Scroll to top button logic
-	if (typeof window !== "undefined") {
-		window.onscroll = () => {
-			setShowTop(window.scrollY > 300);
-		};
-	}
-
-	const filtered =
-		selectedCat === "All"
-			? recipes
-			: recipes.filter((r) => r.cat === selectedCat);
-
+	const [dark, setDark] = useState(false);
 	return (
-		<main className="min-h-screen flex flex-col bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800">
-			{/* Parallax Hero Section */}
-			<section
-				className="relative flex flex-col items-center justify-center min-h-[60vh] w-full overflow-hidden"
-				style={{
-					backgroundImage: "url(/hero.jpg)",
-					backgroundAttachment: "fixed",
-					backgroundSize: "cover",
-					backgroundPosition: "center",
-				}}
+		<main className={
+			`font-sans min-h-screen flex flex-col transition-colors duration-500 ${dark ? "dark" : ""}`
+		}>
+			{/* Dark mode toggle */}
+			<button
+				className="fixed top-4 right-4 z-50 p-2 rounded-full shadow bg-white/80 dark:bg-[#232b2b]/80 hover:scale-110 transition"
+				aria-label="Toggle dark mode"
+				onClick={() => setDark(d => !d)}
 			>
-				<div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80 z-0 animate-pulse-slow" />
-				<div className="relative z-10 flex flex-col items-center justify-center w-full h-full py-16">
-					<h1 className="text-5xl md:text-7xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-yellow-300 to-green-400 drop-shadow-lg mb-4 text-center animate-fade-in">
-						{siteConfig.title}
-					</h1>
-					<p className="text-xl md:text-2xl text-gray-200 font-light text-center max-w-2xl mb-8 animate-fade-in delay-200">
-						{siteConfig.description}
-					</p>
-					<div className="flex gap-4 animate-fade-in delay-300">
-						<a
-							href="#recipes"
-							className="px-6 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-semibold shadow-lg hover:scale-110 hover:shadow-2xl transition-transform duration-200"
-						>
-							Explore Recipes
-						</a>
-						<a
-							href="#about"
-							className="px-6 py-3 rounded-lg bg-gradient-to-r from-green-500 to-teal-400 text-white font-semibold shadow-lg hover:scale-110 hover:shadow-2xl transition-transform duration-200"
-						>
-							About Us
-						</a>
+				{dark ? "🌙" : "☀️"}
+			</button>
+
+			{/* Header */}
+			<header className="sticky top-0 z-40 bg-gradient-to-b from-[#1a2a23] via-[#1a2a23]/90 to-transparent dark:from-[#10181a] dark:via-[#10181a]/90 shadow flex items-center justify-between px-8 py-5 transition-colors duration-500">
+				<div className="flex items-center gap-3">
+					<Image src="/logo_food.png" alt="International Food" width={44} height={44} className="rounded-full border-2 border-gold-400 shadow" />
+					<span className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-[#1a2a23] dark:text-[#f5f5f5]">International Food</span>
+				</div>
+				<nav className="hidden md:flex gap-10 items-center">
+					<a href="#" className="font-semibold text-lg text-[#1a2a23] dark:text-[#f5f5f5] hover:text-gold-500 dark:hover:text-gold-400 transition-colors">Home</a>
+					<a href="#cuisines" className="font-semibold text-lg text-[#1a2a23] dark:text-[#f5f5f5] hover:text-gold-500 dark:hover:text-gold-400 transition-colors">Cuisines</a>
+					<a href="#dishes" className="font-semibold text-lg text-[#1a2a23] dark:text-[#f5f5f5] hover:text-gold-500 dark:hover:text-gold-400 transition-colors">Popular Dishes</a>
+					<a href="#why" className="font-semibold text-lg text-[#1a2a23] dark:text-[#f5f5f5] hover:text-gold-500 dark:hover:text-gold-400 transition-colors">Why Choose Us</a>
+					<a href="#reviews" className="font-semibold text-lg text-[#1a2a23] dark:text-[#f5f5f5] hover:text-gold-500 dark:hover:text-gold-400 transition-colors">Reviews</a>
+				</nav>
+			</header>
+
+			{/* Hero */}
+			<section className="relative flex flex-col items-center justify-center min-h-[80vh] w-full bg-gradient-to-br from-[#e9e6df] to-[#f8f5f2] dark:from-[#18181b] dark:to-[#232b2b] overflow-hidden">
+				<Image src="/hero-food.jpg" alt="World Food" fill className="object-cover z-0" />
+				<div className="absolute inset-0 bg-gradient-to-b from-[#1a2a23]/80 via-transparent to-[#e9e6df]/80 dark:from-[#10181a]/90 dark:to-[#232b2b]/80 z-10" />
+				<div className="relative z-20 flex flex-col items-center justify-center py-24 px-4 max-w-2xl mx-auto">
+					<h1 className="font-serif text-5xl md:text-7xl font-bold text-center text-[#1a2a23] dark:text-[#f5f5f5] mb-6 leading-tight drop-shadow-lg">Taste the World.<br /><span className="text-gold-500 dark:text-gold-400">One Bite at a Time.</span></h1>
+					<p className="text-xl md:text-2xl text-[#232b2b] dark:text-[#e9e6df] font-light text-center mb-10 max-w-xl">Experience authentic international cuisine in our elegant restaurant.</p>
+					<div className="flex gap-6">
+						<a href="#cuisines" className="px-8 py-3 rounded-full bg-gradient-to-r from-gold-400 to-orange-400 text-white font-bold shadow-lg hover:scale-105 hover:from-orange-400 hover:to-gold-400 transition">View Menu</a>
 					</div>
 				</div>
 			</section>
 
-			{/* Category Filter */}
-			<div className="flex flex-wrap justify-center gap-3 py-6 animate-fade-in-up">
-				{categories.map((cat) => (
-					<button
-						key={cat}
-						className={`px-4 py-2 rounded-full font-medium border border-white/20 text-white transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white ${
-							selectedCat === cat
-								? "bg-gradient-to-r from-blue-500 to-purple-600 text-white scale-105 shadow-lg"
-								: "bg-black/40"
-						}`}
-						onClick={() => setSelectedCat(cat)}
-					>
-						{cat}
-					</button>
-				))}
-			</div>
-
-			{/* Recipes Section */}
-			<section id="recipes" className="py-12 px-4 max-w-6xl mx-auto w-full">
-				<h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center animate-fade-in">
-					Popular Recipes
-				</h2>
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-					{filtered.map((r, i) => (
-						<div
-							key={r.name}
-							className="bg-white/10 rounded-xl shadow-lg p-6 flex flex-col items-center hover:bg-white/20 transition group animate-fade-in-up"
-						>
-							<img
-								src={r.img}
-								alt={r.name}
-								className="w-20 h-20 mb-4 rounded-full shadow group-hover:scale-110 transition-transform duration-200"
-							/>
-							<h3 className="text-xl font-semibold text-white mb-2 group-hover:text-yellow-300 transition-colors duration-200">
-								{r.name}
-							</h3>
-							<p className="text-gray-200 text-center mb-4">{r.desc}</p>
-							<button className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg shadow hover:scale-110 hover:shadow-2xl transition-transform duration-200">
-								View Recipe
-							</button>
+			{/* International Cuisines */}
+			<section id="cuisines" className="py-20 px-4 max-w-[1320px] mx-auto w-full">
+				<h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-12 text-[#1a2a23] dark:text-[#f5f5f5]">International Cuisines</h2>
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+					{cuisines.map(c => (
+						<div key={c.name} className="bg-white/90 dark:bg-[#232b2b]/90 rounded-2xl shadow-xl p-6 flex flex-col items-center hover:scale-105 hover:shadow-2xl transition group">
+							<span className="text-4xl mb-4">{c.icon}</span>
+							<Image src={c.img} alt={c.name} width={180} height={120} className="rounded-xl mb-4 shadow group-hover:brightness-110 transition" />
+							<h3 className="font-serif text-2xl font-bold mb-2 text-[#1a2a23] dark:text-[#f5f5f5]">{c.name}</h3>
 						</div>
 					))}
 				</div>
 			</section>
 
-			{/* Testimonials Section */}
-			<section className="py-16 px-4 max-w-4xl mx-auto w-full animate-fade-in">
-				<h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
-					What Our Users Say
-				</h2>
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-					{testimonials.map((t, i) => (
-						<div
-							key={i}
-							className="bg-white/10 rounded-xl shadow-lg p-6 flex flex-col items-center hover:bg-white/20 transition animate-fade-in-up"
-						>
-							<div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-yellow-300 flex items-center justify-center text-2xl font-bold text-white mb-4">
-								{t.name[0]}
+			{/* Popular Dishes */}
+			<section id="dishes" className="py-20 px-4 max-w-[1320px] mx-auto w-full">
+				<h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-12 text-[#1a2a23] dark:text-[#f5f5f5]">Popular Dishes</h2>
+				<div className="flex gap-8 overflow-x-auto pb-4">
+					{dishes.map(dish => (
+						<div key={dish.name} className="min-w-[300px] bg-white/90 dark:bg-[#232b2b]/90 rounded-2xl shadow-xl p-6 flex flex-col items-center hover:scale-105 hover:shadow-2xl transition group mr-4 last:mr-0">
+							<Image src={dish.img} alt={dish.name} width={180} height={120} className="rounded-xl mb-4 shadow group-hover:brightness-110 transition" />
+							<h3 className="font-serif text-xl font-bold mb-2 text-[#1a2a23] dark:text-[#f5f5f5]">{dish.name}</h3>
+							<p className="text-[#232b2b] dark:text-[#e9e6df] mb-2">{dish.desc}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			{/* Why Choose Us */}
+			<section id="why" className="py-20 px-4 max-w-[1200px] mx-auto w-full">
+				<h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-12 text-[#1a2a23] dark:text-[#f5f5f5]">Why Choose Us</h2>
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+					{values.map(v => (
+						<div key={v.title} className="bg-white/90 dark:bg-[#232b2b]/90 rounded-2xl shadow-xl p-8 flex flex-col items-center hover:scale-105 hover:shadow-2xl transition group">
+							<span className="text-4xl mb-4">{v.icon}</span>
+							<h3 className="font-serif text-xl font-bold mb-2 text-[#1a2a23] dark:text-[#f5f5f5]">{v.title}</h3>
+							<p className="text-[#232b2b] dark:text-[#e9e6df] text-center">{v.desc}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			{/* Customer Reviews */}
+			<section id="reviews" className="py-20 px-4 max-w-[1000px] mx-auto w-full">
+				<h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-12 text-[#1a2a23] dark:text-[#f5f5f5]">Customer Reviews</h2>
+				<div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+					{reviews.map(r => (
+						<div key={r.name} className="bg-white/90 dark:bg-[#232b2b]/90 rounded-2xl shadow-xl p-8 flex flex-col items-center hover:scale-105 hover:shadow-2xl transition group">
+							<Image src={r.img} alt={r.name} width={64} height={64} className="w-16 h-16 rounded-full object-cover border-2 border-gold-400 dark:border-gold-500 mb-4 group-hover:scale-110 transition" />
+							<div className="flex mb-2">
+								{Array.from({ length: r.stars }).map((_, i) => (
+									<span key={i} className="text-gold-500 dark:text-gold-400 text-xl">★</span>
+								))}
 							</div>
-							<p className="text-gray-200 text-center mb-2 italic">
-								“{t.text}”
-							</p>
-							<span className="text-yellow-300 font-semibold">{t.name}</span>
+							<p className="italic text-center mb-2 text-[#232b2b] dark:text-[#e9e6df]">“{r.text}”</p>
+							<span className="text-gold-500 dark:text-gold-400 font-semibold">{r.name}</span>
 						</div>
 					))}
 				</div>
-			</section>
-
-			{/* About Section */}
-			<section id="about" className="py-16 px-4 max-w-3xl mx-auto w-full animate-fade-in">
-				<h2 className="text-3xl md:text-4xl font-bold text-white mb-6 text-center">
-					About International Food
-				</h2>
-				<p className="text-gray-200 text-lg text-center mb-4">
-					Welcome to International Food! Discover recipes from all over the
-					world, learn about ingredients, and get inspired to cook something new
-					every day. Our mission is to bring global flavors to your kitchen with
-					easy-to-follow recipes and beautiful food stories.
-				</p>
 			</section>
 
 			{/* Footer */}
-			<footer className="w-full py-6 bg-black/80 text-gray-400 text-center mt-auto border-t border-white/10 animate-fade-in">
-				<span className="text-sm">
-					&copy; {new Date().getFullYear()} International Food. All rights
-					reserved.
-				</span>
+			<footer className="w-full py-10 bg-gradient-to-t from-[#1a2a23] via-[#232b2b] to-transparent dark:from-[#10181a] dark:via-[#232b2b] text-gray-200 text-center mt-auto">
+				<div className="flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-4">
+					<div>
+						<span className="font-serif font-bold text-lg">International Food</span> &copy; {new Date().getFullYear()}
+					</div>
+					<div className="flex gap-4">
+						<a href="#" className="hover:text-gold-400">Facebook</a>
+						<a href="#" className="hover:text-gold-400">Instagram</a>
+						<a href="#" className="hover:text-gold-400">TikTok</a>
+					</div>
+					<div>
+						<span>Contact: info@internationalfood.com</span>
+					</div>
+				</div>
 			</footer>
-
-			{/* Scroll to Top Button */}
-			{showTop && (
-				<button
-					className="fixed bottom-8 right-8 p-3 rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 text-white shadow-lg hover:scale-110 transition-transform animate-fade-in"
-					onClick={() =>
-						window.scrollTo({ top: 0, behavior: "smooth" })
-					}
-					aria-label="Scroll to top"
-				>
-					↑
-				</button>
-			)}
 		</main>
 	);
 }

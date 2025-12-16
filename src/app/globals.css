@@ -6,6 +6,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --gold-400: #eab308;
+  --gold-500: #fbbf24;
 }
 
 @theme inline {
@@ -23,9 +25,29 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #f8f5f2;
+  color: #232b2b;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.dark body {
+  background: #18181b;
+  color: #f5f5f5;
+}
+
+.text-gold-500 { color: var(--gold-500); }
+.text-gold-400 { color: var(--gold-400); }
+.bg-gold-400 { background-color: var(--gold-400); }
+.border-gold-400 { border-color: var(--gold-400); }
+.border-gold-500 { border-color: var(--gold-500); }
+
+/* Smooth transitions */
+* { transition-property: color, background, border, box-shadow, transform; transition-duration: 200ms; }
+
+/* Responsive helpers */
+@media (max-width: 600px) {
+  h1, .font-serif.text-5xl, .font-serif.text-7xl { font-size: 2rem !important; }
+  h2, .font-serif.text-4xl, .font-serif.text-5xl { font-size: 1.5rem !important; }
 }
 
 /* Animations for modern homepage */
@@ -49,4 +71,11 @@ body {
 }
 .animate-pulse-slow {
   animation: pulse 4s infinite;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', 'DM Serif Display', serif;
+}
+.font-sans {
+  font-family: 'Inter', 'Open Sans', Arial, sans-serif;
 }
