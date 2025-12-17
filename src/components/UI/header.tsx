@@ -80,6 +80,7 @@ console.log("status",status);
    
       </NavbarContent>
       <NavbarContent justify="end">
+        {isAuth && <p>Hello ,{session?.user?.name}!</p>}
         {!isAuth ? (
           <>
             <NavbarItem className="hidden lg:flex">

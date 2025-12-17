@@ -1,6 +1,7 @@
 "use client";
 
 import { registerUser } from "@/actions/register";
+import type { IFormData } from "@/types/for-data";
 import { Form, Input, Button } from "@heroui/react";
 import { register } from "module";
 import { useState } from "react";
@@ -10,12 +11,14 @@ interface Iprops {
 }
 
 const RegistrationForm = ({ onclose }: Iprops) => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<IFormData>({
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,12 +27,21 @@ const RegistrationForm = ({ onclose }: Iprops) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-
-    const result = await registerUser(formData);
-    console.log("Registration result:", result);
-
-    onclose();
+    setError(null);
+    setLoading(true);
+    try {
+      const result = await registerUser(formData);
+      if (typeof result === "object" && result && "error" in result) {
+        setError(result.error);
+        setLoading(false);
+        return;
+      }
+      onclose();
+    } catch (err) {
+      setError("Något gick fel vid registrering.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,6 +52,11 @@ const RegistrationForm = ({ onclose }: Iprops) => {
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
         Create Your Account
       </h2>
+      {error && (
+        <div className="mb-4 text-red-600 text-center font-semibold bg-red-100 border border-red-300 rounded p-2">
+          {error}
+        </div>
+      )}
       <Input
         aria-label="Email"
         required
@@ -51,6 +68,7 @@ const RegistrationForm = ({ onclose }: Iprops) => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setFormData({ ...formData, email: e.target.value })
         }
+        disabled={loading}
       />
       <div className="relative w-full mb-4">
         <Input
@@ -63,6 +81,7 @@ const RegistrationForm = ({ onclose }: Iprops) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setFormData({ ...formData, password: e.target.value })
           }
+          disabled={loading}
         />
         <label className="absolute inset-y-0 right-3 flex items-center cursor-pointer">
           <input
@@ -91,6 +110,7 @@ const RegistrationForm = ({ onclose }: Iprops) => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setFormData({ ...formData, confirmPassword: e.target.value })
           }
+          disabled={loading}
         />
         <label className="absolute inset-y-0 right-3 flex items-center cursor-pointer">
           <input
@@ -112,14 +132,16 @@ const RegistrationForm = ({ onclose }: Iprops) => {
         <Button
           onPress={onclose}
           className="px-6 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600"
+          isDisabled={loading}
         >
           Cancel
         </Button>
         <Button
           type="submit"
           className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+          isDisabled={loading}
         >
-          Register
+          {loading ? "Registrerar..." : "Register"}
         </Button>
       </div>
     </Form>
